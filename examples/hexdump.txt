@@ -1,0 +1,36 @@
+Real bserve/bcurl exchange
+=========================
+
+Captured locally with:
+
+    python bserve examples 54481
+    python bcurl -v 127.0.0.1:54481/index.html
+
+The server served examples/index.html. The request and response were exchanged
+over one TCP connection. bcurl writes the frame transcript to stderr and writes
+only the response body bytes to stdout.
+
+stderr (verbose frame transcript):
+
+--- SENT REQUEST FRAME (44 bytes) ---
+Decoded: magic=b'BH' version=1 type=REQUEST flags=0x0000 status=0 payload_length=24 body_length=0 reserved=0x00000000
+Header: ':path' = '/index.html'
+Body: 0 bytes
+Offset   Hex bytes                                         ASCII
+00000000  42 48 01 01 00 00 00 00 00 00 00 18 00 00 00 00  |BH..............|
+00000010  00 00 00 00 00 01 00 05 00 00 00 0b 3a 70 61 74  |............:pat|
+00000020  68 2f 69 6e 64 65 78 2e 68 74 6d 6c              |h/index.html|
+--- RECEIVED FRAME (70 bytes) ---
+Decoded: magic=b'BH' version=1 type=RESPONSE flags=0x0000 status=200 payload_length=50 body_length=21 reserved=0x00000000
+Header: 'content-type' = 'text/html'
+Body: 21 bytes
+Offset   Hex bytes                                         ASCII
+00000000  42 48 01 02 00 00 00 c8 00 00 00 32 00 00 00 15  |BH.........2....|
+00000010  00 00 00 00 00 01 00 0c 00 00 00 09 63 6f 6e 74  |............cont|
+00000020  65 6e 74 2d 74 79 70 65 74 65 78 74 2f 68 74 6d  |ent-typetext/htm|
+00000030  6c 48 65 6c 6c 6f 20 66 72 6f 6d 20 42 48 54 54  |lHello from BHTT|
+00000040  50 2f 31 21 0d 0a                                |P/1!..|
+
+stdout (response body only; exact bytes shown escaped):
+
+Hello from BHTTP/1!\r\n
